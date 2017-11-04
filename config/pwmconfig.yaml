@@ -1,0 +1,21 @@
+command_type:
+  'servo180':
+    range: [-90,90]
+  'servo90':
+    range: [-45,45]
+  'motor100':
+    range: [-100,100]
+
+pwm_device:
+  'servo_cam_azimuth':
+    'pin': 1
+    'command_type': 'servo90'
+  'servo_cam_declinaison':
+    'pin': 2
+    'command_type': 'servo90'
+  'motor_left':
+    'pin': 10
+    'command_type': 'motor100'
+  'motor_right':
+    'pin': 11
+    'command_type': 'motor100'
