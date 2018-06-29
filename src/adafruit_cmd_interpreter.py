@@ -2,7 +2,7 @@
 # coding=utf-8
 
 import rospy
-from ros_bprime_drivers.msg import PwmCmd
+from pwmboard_msgs.msg import PwmCmd
 from std_msgs.msg import Int16
 
 

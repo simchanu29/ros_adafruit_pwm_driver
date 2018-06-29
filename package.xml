@@ -19,13 +19,13 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/ros_adafruit_pwm_driver</url> -->
+  <url type="website">https://github.com/simchanu29/ros_adafruit_pwm_driver</url>
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
   <!-- Authors do not have to be maintainers, but could be -->
   <!-- Example: -->
-  <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
+  <author email="simon.chanu@ensta-bretagne.org">Simon CHANU1</author>
 
 
   <!-- The *depend tags are used to specify dependencies -->
@@ -55,6 +55,8 @@
   <build_export_depend>rospy</build_export_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
+  <exec_depend>i2c-tools</exec_depend>
+  <exec_depend>python-smbus</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

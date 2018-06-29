@@ -2,24 +2,31 @@
 # coding=utf-8
 
 import rospy
-from ros_bprime_drivers.msg import PwmCmd
-from adafruit_pwm_drivers.Adafruit_PWM_Servo_Driver.Adafruit_PWM_Servo_Driver import PWM
-
+from pwmboard_msgs.msg import PwmCmd
+# from adafruit_pwm_drivers.Adafruit_PWM_Servo_Driver.Adafruit_PWM_Servo_Driver import PWM
+from Adafruit_Python_PCA9685.Adafruit_PCA9685.PCA9685 as PWM
 
 class PWMBoard:
-    def __init__(self, pwm_devices, command_types):
+    def __init__(self, address, actuators, sensors, data_types):
 
         # Gestion de la carte
-        self.pwm = PWM(0x40)
-        self.pwm.setPWMFreq(50)
+        self.pwm = PWM(address)
+        self.pwm.set_pwm_freq(50)
 
         # Formattage des données (quelle pin de la carte associée à quoi)
-        self.pins = self.gen_dic_by_pin_keys(pwm_devices)
-        self.devices = pwm_devices
-        self.types = command_types
-        print 'pins : ', self.pins
+        self.devices_by_pins = self.gen_dic_by_pin_keys(actuators
+        self.devices_by_name = actuators
 
-    def gen_dic_by_pin_keys(self, pwm_devices):
+        self.types = data_types
+        # self.sensors = sensors
+        print 'devices_by_pins : ', self.devices_by_pins
+
+        # for device in self.devices_by_name:
+            # pin = self.devices_by_name[device]['pin']
+            # data_type = self.devices_by_name[device]['data_type']
+            # self.setAccel(pin, self.types[data_type]['accel'])
+
+    def gen_dic_by_pin_keys(self, devices):
         """
         Transforme la table de hachage où on accède aux numéros des pins par le nom de l'appareil en une table de
         hachage où on accède au nom de l'appareil par son numéro de pin associé
@@ -27,9 +34,9 @@ class PWMBoard:
         :return pin_dic:
         """
         pin_dic = dict()
-        for device in pwm_devices:
+        for device in devices:
             print 'device :', device
-            pin = int(pwm_devices[device]['pin'])
+            pin = int(devices[device]['pin'])
             pin_dic[pin] = device
         return pin_dic
 
@@ -57,9 +64,9 @@ class PWMBoard:
         cmd = (msg.command - range_zero)*1000/range_tot + 1500
 
         # Envoi de la commande
-        self.setPWM(msg.pin, cmd)
+        self.set_pwm(msg.pin, cmd)
 
-    def setPWM(self, pin, cmd):
+    def set_pwm(self, pin, cmd):
         """
         Reçoit une commande en pwm et le traduit à l'échelle de la carte
         :param pin: int
@@ -70,13 +77,44 @@ class PWMBoard:
         print 'pwm cmd :', cmd
         cmd = int((cmd - 1000) / 1000 * 409)
         print 'setPWM cmd', cmd
-        self.pwm.setPWM(pin, 0, cmd)  # max 4095, 1 cycle = 4095. Donc 409 max (20ms -> 2ms)
+        self.pwm.set_pwm(pin, 0, cmd)  # max 4095, 1 cycle = 4095. Donc 409 max (20ms -> 2ms)
+
+    # def publish(self, sensors):
+    #     for device in sensors:
+    #         pub = sensors[device]['publisher']
+    #         pin = int(sensors[device]['pin'])
+    #
+    #         # rospy.loginfo("getting positions")
+    #         val = self.get_position(pin)
+    #         # rospy.loginfo("Sensors values")
+    #         pub.publish(val)
 
 
 if __name__ == '__main__':
-    rospy.init_node("motorBoard_driver")
 
-    pwmboard = PWMBoard(rospy.get_param('pwm_device'), rospy.get_param('command_type'))
-    rospy.Subscriber('pwm_cmd', PwmCmd, pwmboard.cb_pwm)
+    rospy.init_node('adafruit_pwm_driver')
 
-    rospy.spin()
+    rospy.loginfo("adafruit_pwm_driver Node Initialised")
+    address = rospy.get_param('~address', 0x40)
+    devices = rospy.get_param('adafruit_pwm/device')
+    data_types = rospy.get_param('adafruit_pwm/data_types')
+
+    actuators = {}
+    sensors = {}
+    for device in devices:
+        print data_types[devices[device]['data_type']]['type']
+        # if data_types[devices[device]['data_type']]['type']=='input':
+        #     sensors[device] = devices[device]
+        #     sensors[device]['publisher'] = rospy.Publisher(device, Float32, queue_size=1)
+        if data_types[devices[device]['data_type']]['type']=='output':
+            actuators[device] = devices[device]
+
+    adafruit = PWMBoard(address, actuators, sensors, data_types)
+    rospy.Subscriber('cmd_pwm', PwmCmd, adafruit.cb_pwm)
+
+    while not rospy.is_shutdown():
+        try:
+            rospy.rostime.wallsleep(0.1)
+            adafruit.publish(sensors)
+        except rospy.ROSInterruptException:
+            adafruit.close()
