@@ -1,0 +1,5 @@
+<launch>
+    <rosparam file="$(find adafruit_pwm_driver)/config/pwmconfig_example.yaml" command="load"/>
+    <node name="pwm_driver" pkg="adafruit_pwm_driver" type="adafruit_pwm_driver.py" />
+    <node name="pwm_interpreter" pkg="adafruit_pwm_driver" type="adafruit_cmd_interpreter.py" />
+</launch>

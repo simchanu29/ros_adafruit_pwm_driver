@@ -1,16 +1,16 @@
 <!-- This launchfile is for example only. It has dependencies to other packages -->
 <launch>
 
-    <rosparam file="$(find ros_adafruit_pwm_drivers)/config/pwmconfig.yaml" command="load"/>
+    <rosparam file="$(find adafruit_pwm_driver)/config/pwmconfig_example.yaml" command="load"/>
 
     <group ns="gauche">
-        <node name="pwm_interpreter" pkg="ros_adafruit_pwm_drivers" type="adafruit_cmd_interpreter.py">
+        <node name="pwm_interpreter" pkg="adafruit_pwm_drivers" type="adafruit_cmd_interpreter.py">
             <param name="sub_name" value="cmd_thr"/>
             <param name="device_name" value="motor_left"/>
         </node>
     </group>
     <group ns="droite">
-        <node name="pwm_interpreter" pkg="ros_adafruit_pwm_drivers" type="adafruit_cmd_interpreter.py">
+        <node name="pwm_interpreter" pkg="adafruit_pwm_drivers" type="adafruit_cmd_interpreter.py">
             <param name="sub_name" value="cmd_thr"/>
             <param name="device_name" value="motor_right"/>
         </node>

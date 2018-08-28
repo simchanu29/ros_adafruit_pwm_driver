@@ -1,4 +1,6 @@
-adafruit:
+pwm_board_config:
+# If your board doesn't handle inputs (sensors) then defining device with a data_type.type:'inputs' will make the
+# node throw an error
   data_types:
     'servo180':
       type: 'output'
