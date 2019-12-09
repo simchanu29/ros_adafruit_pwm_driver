@@ -1,5 +1,15 @@
 <launch>
-    <rosparam file="$(find adafruit_pwm_driver)/config/pwmconfig_example.yaml" command="load"/>
-    <node name="pwm_driver" pkg="adafruit_pwm_driver" type="adafruit_pwm_driver.py" />
-    <node name="pwm_interpreter" pkg="adafruit_pwm_driver" type="adafruit_cmd_interpreter.py" />
+    <rosparam file="$(find ev-pwm-adafruit)/config/pwmconfig_example.yaml" command="load"/>
+    <!-- <rosparam file="$(find vsmarth)/mission_01_test_piscine/ev-pwm-adafruit/pwmconfig.yaml" command="load"/> -->
+
+    <node name="pwm_driver" pkg="ev-pwm-adafruit" type="adafruit_pwm_driver.py" output="screen">
+      <param name="address" value="0x40"/>
+    </node>
+    <node name="pwm_interpreter" pkg="ev-pwm-adafruit" type="adafruit_cmd_interpreter.py" output="screen">
+      <param name="sub_name" value="/thrusters/cmd_mot" type="str"/>
+    </node>
+    <node name="esc_calibration" pkg="ev-pwm-adafruit" type="esc_calibrator.py" output="screen">
+      <param name="topic_battery" value="/battery_puis/switch"/>
+    </node>
+
 </launch>

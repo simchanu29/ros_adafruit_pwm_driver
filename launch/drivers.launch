@@ -1,3 +1,3 @@
 <launch>
-    <node name="pwm_driver" pkg="adafruit_pwm_driver" type="adafruit_pwm_driver.py"/>
+    <node name="pwm_driver" pkg="ev-pwm-adafruit" type="adafruit_pwm_driver.py"/>
 </launch>

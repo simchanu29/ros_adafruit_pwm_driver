@@ -13,6 +13,10 @@ pwm_board_config:
     'motor100':
       type: 'output'
       range: [-100,100]
+      max: 50.0
+      min: -50.0
+      deadband: [-2,2]
+      deadband_offset: [-20,20]
       accel: 10
     'attopilot':
       type: 'input'
@@ -20,19 +24,19 @@ pwm_board_config:
   device:
     'thruster_left':
       'pin': 0
-      'data_type': 'motor100'
+      'type': 'motor100'
     'thruster_right':
       'pin': 1
-      'data_type': 'motor100'
+      'type': 'motor100'
     'battery1_voltage_raw':
       'pin': 8
-      'data_type': 'attopilot'
+      'type': 'attopilot'
     'battery1_current_raw':
       'pin': 9
-      'data_type': 'attopilot'
+      'type': 'attopilot'
     'battery2_voltage_raw':
       'pin': 10
-      'data_type': 'attopilot'
+      'type': 'attopilot'
     'battery2_current_raw':
       'pin': 11
-      'data_type': 'attopilot'
+      'type': 'attopilot'

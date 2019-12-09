@@ -7,8 +7,8 @@ from catkin_pkg.python_setup import generate_distutils_setup
 setup_args = generate_distutils_setup(
     packages=['Adafruit_PCA9685', 'Adafruit_GPIO'],
     package_dir={'': 'include',
-                 'Adafruit_PCA9685': 'include/Adafruit_Python_PCA9685/Adafruit_PCA9685',
-                 'Adafruit_GPIO': 'include/Adafruit_Python_GPIO/Adafruit_GPIO'})
+                 'Adafruit_PCA9685': 'Adafruit_Python_PCA9685/Adafruit_PCA9685',
+                 'Adafruit_GPIO': 'Adafruit_Python_GPIO/Adafruit_GPIO'})
 
 setup(**setup_args)
 

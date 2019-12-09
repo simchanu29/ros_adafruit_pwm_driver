@@ -5,12 +5,14 @@
 [![GitHub license](https://img.shields.io/github/license/simchanu29/ros_adafruit_pwm_driver.svg)](https://github.com/simchanu29/ros_adafruit_pwm_driver/blob/master/LICENSE)
 
 ### Usage
+
 Used for [Adafruit 16-Channel PWM / Servo HAT for Raspberry Pi](https://www.adafruit.com/product/2327).
 
 Listen for `PwmDeviceArray` messages on `/cmd_pwm_board` by default and send accordingly the commands to the board by 
 I2C.
 
 To test the package without any prior configurations, launch : 
+
 ```bash
 roslaunch adafruit_pwm_driver test.launch
 ```
@@ -23,6 +25,7 @@ This package needs to be configured with a YAML config file. An example is in th
 file.
 
 Example : 
+
 ```yaml
 pwm_board_config:
 # If your board doesn't handle inputs (sensors) then defining device with a data_type.type:'inputs' will make the
@@ -48,34 +51,47 @@ pwm_board_config:
 
  - adafruit_pwm_driver.py
     - Parameters
+
     ```
     pwm_board_config/device : list of devices connected to the board
     pwm_board_config/data_types : list of data types
     ```
+
     - Subscriptions
+
     ```
     cmd_pwm : PwmCmdArray
     ```
+
     - Publications
+
     ```
 
     ```
     
  - adafruit_cmd_interpreter.py
     - Parameters
+
     ```
     pwm_board_config/device : list of devices connected to the board
     ~sub_name : topic on which the node suscribe
     ```
+
     - Subscriptions
+
     ```
     sub_name : PwmDeviceArray (default : cmd_pwm_board)
     ```
+
     - Publications
+
     ```
     cmd_pwm : PwmCmdArray
     ```
+
 ### Notes
+
 The command is in ms. For example 1000 is minimum, and 2000 is maximum pwm.
+
 
 
